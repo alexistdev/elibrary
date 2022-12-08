@@ -45,6 +45,7 @@
 <!-- Start: Jlayout -->
 <x-rocker.js-layout />
 <!-- End: Jlayout -->
+@stack('jsLayout')
 </body>
 
 </html>

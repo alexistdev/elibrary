@@ -26,7 +26,7 @@
                 <div class="menu-title">Buku</div>
             </a>
             <ul>
-                <li> <a href="form-elements.html"><i class="bx bx-right-arrow-alt"></i>Kategori</a>
+                <li> <a href="{{route('adm.kategori')}}"><i class="bx bx-right-arrow-alt"></i>Kategori</a>
                 </li>
                 <li> <a href="form-input-group.html"><i class="bx bx-right-arrow-alt"></i>Pengarang</a>
                 </li>
@@ -52,9 +52,9 @@
         <li class="menu-label">Others</li>
         <li>
             <a href="https://codervent.com/rocker/documentation/index.html" target="_blank">
-                <div class="parent-icon"><i class="bx bx-folder"></i>
+                <div class="parent-icon"><i class="bx bx-cog"></i>
                 </div>
-                <div class="menu-title">Documentation</div>
+                <div class="menu-title">Setting</div>
             </a>
         </li>
         <li>

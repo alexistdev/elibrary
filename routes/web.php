@@ -3,7 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
-    DashboardAdmin as AdmDash
+    DashboardAdmin as AdmDash,
+    KategoriController as AdmKat,
 };
 
 /*
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['roles' => 'admin'], function () {
         Route::get('/admin/dashboard', [AdmDash::class, 'index'])->name('adm.dashboard');
+        Route::get('/admin/kategori', [AdmKat::class, 'index'])->name('adm.kategori');
+        Route::post('/admin/kategori', [AdmKat::class, 'store'])->name('adm.kategori.add');
     });
 });
 

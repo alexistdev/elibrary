@@ -4,7 +4,7 @@ namespace App\Http\Traits;
 
 use Illuminate\Support\Facades\Auth;
 
-trait GuruTrait
+trait AdminTrait
 {
     protected $users;
 
