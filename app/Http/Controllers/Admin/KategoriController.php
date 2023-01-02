@@ -26,9 +26,9 @@ class KategoriController extends Controller
                 })
                 ->addColumn('action', function ($row) {
 //                    $url = route('', base64_encode($row->id));
-                    $url = "";
-                    $btn = " <a href=\"$url\" class=\"btn btn-outline-primary px-5\"> Edit</a>";
-//                    $btn = $btn . " <a href=\"#\" class=\"btn btn-danger btn-sm ml-auto open-hapus\" data-id=\"$row->id\" data-bs-toggle=\"modal\" data-bs-target=\"#hapusModal\"><i class=\"fas fa-trash\"></i> Delete</i></a>";
+                    $id = base64_encode($row->id);
+                    $btn = " <a href=\"#\" class=\"btn btn-outline-primary px-5 open-edit\" data-bs-toggle=\"modal\" data-id=\"$id\" data-nama=\"$row->name\" data-bs-target=\"#modalEdit\"> Edit</a>";
+                    $btn = $btn . " <a href=\"#\" class=\"btn btn-outline-danger px-5 open-hapus\" data-id=\"$id\" data-bs-toggle=\"modal\" data-bs-target=\"#modalHapus\"> Delete</i></a>";
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -62,6 +62,66 @@ class KategoriController extends Controller
                 $kategori->save();
                 DB::commit();
                 return redirect(route('adm.kategori'))->with(['success' => "Data berhasil ditambahkan!"]);
+            } catch (Exception $e) {
+                DB::rollback();
+                return redirect(route('adm.kategori'))->with(['error' => $e->getMessage()]);
+            }
+        } else {
+            return abort("404", "NOT FOUND");
+        }
+    }
+
+    /** route: adm.kategori.edit */
+    public function update(Request $request)
+    {
+        if ($request->routeIs('adm.*')) {
+            $rules = [
+                'nama' => 'required|max:255',
+                'idKategori' => 'required|max:255',
+            ];
+            $message = [
+                'nama.required' => "Nama Kategori harus diisi!",
+                'nama.max' => "Panjang karakter maksimal adalah 255 karakter!",
+                'nama.unique' => "Nama kategori sudah ada di dalam database!",
+                'idKategori.required' => "ID tidak ditemukan silahkan ulangi kembali atau refresh halaman!",
+                'idKategori.max' => "ID tidak ditemukan silahkan ulangi kembali atau refresh halaman!",
+            ];
+            $request->validateWithBag('edit', $rules, $message);
+            DB::beginTransaction();
+            try {
+                Kategori::where('id',base64_decode($request->idKategori))->update([
+                   'name' => $request->nama,
+                ]);
+                DB::commit();
+                return redirect(route('adm.kategori'))->with(['success' => "Data berhasil diperbaharui!"]);
+            } catch (Exception $e) {
+                DB::rollback();
+                return redirect(route('adm.kategori'))->with(['error' => $e->getMessage()]);
+            }
+
+        } else {
+            return abort("404", "NOT FOUND");
+        }
+
+    }
+
+    /** route: adm.kategori.delete */
+    public function destroy(Request $request){
+        if ($request->routeIs('adm.*')) {
+            $rules = [
+                'idKategori' => 'required|max:255',
+            ];
+            $message = [
+                'idKategori.required' => "ID tidak ditemukan silahkan ulangi kembali atau refresh halaman!",
+                'idKategori.max' => "ID tidak ditemukan silahkan ulangi kembali atau refresh halaman!",
+            ];
+            $request->validateWithBag('hapus', $rules, $message);
+            DB::beginTransaction();
+            try {
+                $kategori = Kategori::findOrFail(base64_decode($request->idKategori));
+                $kategori->delete();
+                DB::commit();
+                return redirect(route('adm.kategori'))->with(['warning' => "Data berhasil dihapus!"]);
             } catch (Exception $e) {
                 DB::rollback();
                 return redirect(route('adm.kategori'))->with(['error' => $e->getMessage()]);

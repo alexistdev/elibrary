@@ -33,8 +33,11 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['roles' => 'admin'], function () {
         Route::get('/admin/dashboard', [AdmDash::class, 'index'])->name('adm.dashboard');
+
         Route::get('/admin/kategori', [AdmKat::class, 'index'])->name('adm.kategori');
         Route::post('/admin/kategori', [AdmKat::class, 'store'])->name('adm.kategori.add');
+        Route::patch('/admin/kategori', [AdmKat::class, 'update'])->name('adm.kategori.edit');
+        Route::delete('/admin/kategori', [AdmKat::class, 'destroy'])->name('adm.kategori.delete');
     });
 });
 
