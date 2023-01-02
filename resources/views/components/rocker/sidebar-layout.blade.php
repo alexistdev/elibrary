@@ -28,7 +28,7 @@
             <ul>
                 <li> <a href="{{route('adm.kategori')}}"><i class="bx bx-right-arrow-alt"></i>Kategori</a>
                 </li>
-                <li> <a href="form-input-group.html"><i class="bx bx-right-arrow-alt"></i>Pengarang</a>
+                <li> <a href="{{route('adm.author')}}"><i class="bx bx-right-arrow-alt"></i>Pengarang</a>
                 </li>
                 <li> <a href="form-layouts.html"><i class="bx bx-right-arrow-alt"></i>Buku</a>
                 </li>
