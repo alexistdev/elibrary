@@ -63,27 +63,100 @@
                     <h5 class="modal-title" id="modal-standard-title">Tambah Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> <!-- // END .modal-header -->
-                <form action="{{route('adm.kategori.add')}}" method="post">
+                <form action="{{route('adm.book.add')}}" method="post">
                     @csrf
                     <div class="modal-body">
-                        <!-- Start: Nama Kategori -->
-                        <div class="row">
+
+                        <!-- Start: Nama Buku -->
+                        <div class="row mt-3">
                             <div class="col-lg-12">
                                 <label
-                                    for="nama" @class(["form-label","errorLabel",($errors->hasbag('tambah'))? "text-danger":""]) >NAMA
-                                    KATEGORI<span
+                                    for="name" @class(["form-label","errorLabel",($errors->tambah->has('name'))? "text-danger":""]) >JUDUL
+                                    BUKU<span
                                         class="text-danger">*</span></label>
-                                <input type="text" name="nama"
-                                       @class(["form-control","errorInput",($errors->hasbag('tambah'))? "is-invalid":""]) id="nama"
-                                       value="{{old('nama')}}">
+                                <input type="text" name="name"
+                                       @class(["form-control","errorInput",($errors->tambah->has('name'))? "is-invalid":""]) id="name"
+                                       value="{{old('name')}}">
                             </div>
                             <div class="col-lg-12">
-
-                                <div class="text-danger errorMessage">{{ $errors->tambah->first() }}</div>
-
+                                @if($errors->tambah->has('name'))
+                                    <div class="text-danger errorMessage">{{$errors->tambah->first('name')}}</div>
+                                @endif
                             </div>
                         </div>
                         <!-- End: Nama Kategori  -->
+
+                        <!-- Start: Nama Kategori -->
+                        <div class="row mt-3">
+                            <div class="col-lg-12">
+                                <label
+                                    for="kategori_id" @class(["form-label","errorLabel",($errors->tambah->has('kategori_id'))? "text-danger":""]) >NAMA
+                                    KATEGORI<span
+                                        class="text-danger">*</span></label>
+                                <select name="kategori_id"
+                                        id="kategori_id" @class(["form-control","errorInput",($errors->tambah->has('kategori_id'))? "is-invalid":""])>
+                                    <option value="">Pilih</option>
+                                    @foreach($dataKategori as $kategori)
+                                        <option value="{{$kategori->id}}" @if(old('kategori_id') == $kategori->id) selected @endif>{{$kategori->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->tambah->has('kategori_id'))
+                                <div class="col-lg-12">
+                                    <div class="text-danger errorMessage">{{$errors->tambah->first('kategori_id')}}</div>
+                                </div>
+                            @endif
+                        </div>
+                        <!-- End: Nama Kategori  -->
+
+                        <!-- Start: Nama Author -->
+                        <div class="row mt-3">
+                            <div class="col-lg-12">
+                                <label
+                                    for="author_id" @class(["form-label","errorLabel",($errors->tambah->has('author_id'))? "text-danger":""]) >NAMA
+                                    PENGARANG<span
+                                        class="text-danger">*</span></label>
+                                <select name="author_id"
+                                        id="author_id" @class(["form-control","errorInput",($errors->tambah->has('author_id'))? "is-invalid":""])>
+                                    <option value="">Pilih</option>
+                                    @foreach($dataAuthor as $author)
+                                        <option value="{{$author->id}}" @if(old('author_id') == $author->id) selected @endif>{{$author->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->tambah->has('author_id'))
+                                <div class="col-lg-12">
+                                    <div class="text-danger errorMessage">{{$errors->tambah->first('author_id')}}</div>
+                                </div>
+                            @endif
+                        </div>
+                        <!-- End: Nama Author  -->
+
+                        <!-- Start: Tahun Terbit -->
+                        <div class="row mt-3">
+                            <div class="col-lg-12">
+                                <label
+                                    for="tahun" @class(["form-label","errorLabel",($errors->tambah->has('tahun'))? "text-danger":""]) >TAHUN
+                                    TERBIT <span
+                                        class="text-danger">*</span></label>
+                                <select name="tahun"
+                                        id="tahun" @class(["form-control","errorInput",($errors->tambah->has('tahun'))? "is-invalid":""])>
+                                    <option value="">Pilih</option>
+                                    @foreach($dataTahun as $tahun)
+                                        <option value="{{$tahun}}"
+                                                @if(date("Y",strtotime(now())) == $tahun || old('tahun') == $tahun) selected @endif>{{$tahun}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->tambah->has('tahun'))
+                                <div class="col-lg-12">
+                                    <div class="text-danger errorMessage">{{$errors->tambah->first('tahun')}}</div>
+                                </div>
+                            @endif
+                        </div>
+                        <!-- End: Tahun Terbit -->
+
+
                     </div>
                     <!-- // END .modal-body -->
                     <div class="modal-footer">
@@ -177,7 +250,7 @@
                         <!-- Start: Nama Kategori -->
                         <div class="row">
                             <div class="col-lg-12">
-                               Apakah anda ingin menghapus data ini ?
+                                Apakah anda ingin menghapus data ini ?
                             </div>
                         </div>
                         <!-- End: Nama Kategori  -->
@@ -203,14 +276,20 @@
             src="{{asset('template/rocker/assets/plugins/notifications/js/notification-custom-script.js')}}"></script>
         <script>
             @if ($message = Session::get('success'))
-                let pesan = '{!! $message !!}';
-                notif_message('success', pesan);
+            let pesan = '{!! $message !!}';
+            notif_message('success', pesan);
             @endif
 
             @if ($message = Session::get('warning'))
-                let pesanWarning = '{!! $message !!}';
-                notif_message('warning', pesanWarning);
+            let pesanWarning = '{!! $message !!}';
+            notif_message('warning', pesanWarning);
             @endif
+
+            @error('error')
+            let pesanError = '{!! $message !!}';
+            notif_message('warning', pesanError);
+            @enderror
+
 
             function openModal(modal) {
                 modal.modal("show");
