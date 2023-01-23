@@ -108,7 +108,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <input type="hidden" name="idKategori" class="form-control" id="idKategori"/>
+                                <input type="hidden" name="idKategori" class="form-control" id="idKategori" value="{{old('idKategori')}}"/>
                                 @if($errors->edit->has('idKategori'))
                                     <div class="row">
                                         <div
@@ -162,7 +162,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <input type="text" name="idKategori" class="form-control" id="idHapusKategori"/>
+                                <input type="text" name="idKategori" class="form-control" id="idHapusKategori" value="{{old('idKategori')}}"/>
                                 @if($errors->hapus->has('idKategori'))
                                     <div class="row">
                                         <div

@@ -178,39 +178,110 @@
                     <h5 class="modal-title" id="modal-standard-title">Edit Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> <!-- // END .modal-header -->
-                <form action="{{route('adm.kategori.edit')}}" method="post">
+                <form action="{{route('adm.book.edit')}}" method="post">
                     @csrf
                     @method('patch')
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <input type="hidden" name="idKategori" class="form-control" id="idKategori"/>
-                                @if($errors->edit->has('idKategori'))
+                                <input type="hidden" name="idBuku" class="form-control" id="idBuku" value="{{old('idBuku')}}"/>
+                                @if($errors->edit->has('idBuku'))
                                     <div class="row">
                                         <div
-                                            class="text-danger errorMessage">{{$errors->edit->first('idKategori')}}</div>
+                                            class="text-danger errorMessage">{{$errors->edit->first('idBuku')}}</div>
                                     </div>
                                 @endif
                             </div>
                         </div>
-                        <!-- Start: Nama Kategori -->
-                        <div class="row">
+                        <!-- Start: Nama Buku -->
+                        <div class="row mt-3">
                             <div class="col-lg-12">
                                 <label
-                                    for="editNama" @class(["form-label","errorLabel",($errors->edit->has('nama'))? "text-danger":""]) >NAMA
-                                    KATEGORI<span
+                                    for="editName" @class(["form-label","errorLabel",($errors->edit->has('name'))? "text-danger":""]) >JUDUL
+                                    BUKU<span
                                         class="text-danger">*</span></label>
-                                <input type="text" name="nama"
-                                       @class(["form-control","errorInput",($errors->edit->has('nama'))? "is-invalid":""]) id="editNama"
-                                       value="{{old('nama')}}">
+                                <input type="text" name="name"
+                                       @class(["form-control","errorInput",($errors->edit->has('name'))? "is-invalid":""]) id="editName"
+                                       value="{{old('name')}}">
                             </div>
                             <div class="col-lg-12">
-                                @if($errors->edit->has('nama'))
-                                    <div class="text-danger errorMessage">{{$errors->edit->first('nama')}}</div>
+                                @if($errors->tambah->has('name'))
+                                    <div class="text-danger errorMessage">{{$errors->edit->first('name')}}</div>
                                 @endif
                             </div>
                         </div>
+                        <!-- End: Nama Buku  -->
+
+                        <!-- Start: Nama Kategori -->
+                        <div class="row mt-3">
+                            <div class="col-lg-12">
+                                <label
+                                    for="editkategori_id" @class(["form-label","errorLabel",($errors->edit->has('kategori_id'))? "text-danger":""]) >NAMA
+                                    KATEGORI<span
+                                        class="text-danger">*</span></label>
+                                <select name="kategori_id"
+                                        id="editkategori_id" @class(["form-control","errorInput",($errors->edit->has('kategori_id'))? "is-invalid":""])>
+                                    <option value="">Pilih</option>
+                                    @foreach($dataKategori as $kategori)
+                                        <option value="{{$kategori->id}}" @if(old('kategori_id') == $kategori->id) selected @endif>{{$kategori->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->edit->has('kategori_id'))
+                                <div class="col-lg-12">
+                                    <div class="text-danger errorMessage">{{$errors->edit->first('kategori_id')}}</div>
+                                </div>
+                            @endif
+                        </div>
                         <!-- End: Nama Kategori  -->
+
+                        <!-- Start: Nama Author -->
+                        <div class="row mt-3">
+                            <div class="col-lg-12">
+                                <label
+                                    for="editauthor_id" @class(["form-label","errorLabel",($errors->edit->has('author_id'))? "text-danger":""]) >NAMA
+                                    PENGARANG<span
+                                        class="text-danger">*</span></label>
+                                <select name="author_id"
+                                        id="editauthor_id" @class(["form-control","errorInput",($errors->edit->has('author_id'))? "is-invalid":""])>
+                                    <option value="">Pilih</option>
+                                    @foreach($dataAuthor as $author)
+                                        <option value="{{$author->id}}" @if(old('author_id') == $author->id) selected @endif>{{$author->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->edit->has('author_id'))
+                                <div class="col-lg-12">
+                                    <div class="text-danger errorMessage">{{$errors->edit->first('author_id')}}</div>
+                                </div>
+                            @endif
+                        </div>
+                        <!-- End: Nama Author  -->
+
+                        <!-- Start: Tahun Terbit -->
+                        <div class="row mt-3">
+                            <div class="col-lg-12">
+                                <label
+                                    for="edittahun" @class(["form-label","errorLabel",($errors->edit->has('tahun'))? "text-danger":""]) >TAHUN
+                                    TERBIT <span
+                                        class="text-danger">*</span></label>
+                                <select name="tahun"
+                                        id="edittahun" @class(["form-control","errorInput",($errors->edit->has('tahun'))? "is-invalid":""])>
+                                    <option value="">Pilih</option>
+                                    @foreach($dataTahun as $tahun)
+                                        <option value="{{$tahun}}"
+                                                @if(date("Y",strtotime(now())) == $tahun || old('tahun') == $tahun) selected @endif>{{$tahun}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if($errors->edit->has('tahun'))
+                                <div class="col-lg-12">
+                                    <div class="text-danger errorMessage">{{$errors->edit->first('tahun')}}</div>
+                                </div>
+                            @endif
+                        </div>
+                        <!-- End: Tahun Terbit -->
+
                     </div>
                     <!-- // END .modal-body -->
                     <div class="modal-footer">
@@ -299,8 +370,14 @@
             $(document).on("click", ".open-edit", function () {
                 let fid = $(this).data('id');
                 let fnama = $(this).data('nama');
-                $('#idKategori').val(fid);
-                $('#editNama').val(fnama);
+                let fauthor = $(this).data('author');
+                let fkategori = $(this).data('kategori');
+                let ftahun = $(this).data('tahun');
+                $('#idBuku').val(fid);
+                $('#editName').val(fnama);
+                $('#editkategori_id').val(fkategori);
+                $('#editauthor_id').val(fauthor);
+                $('#edittahun').val(ftahun);
             });
 
             /** Saat tombol modal hapus di click */
