@@ -35,7 +35,7 @@ class KategoriController extends Controller
                 ->make(true);
         }
         return view('admin.kategori', array(
-            'judul' => "Dashboard Guru | FavoriteIDN",
+            'judul' => "Dashboard Guru | Elibrary",
             'menuUtama' => 'dashboard',
             'menuKedua' => 'dashboard',
         ));

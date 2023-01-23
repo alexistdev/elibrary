@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 trait AdminTrait
 {
     protected $users;
+    private $title = "E-library";
 
     public function __construct()
     {

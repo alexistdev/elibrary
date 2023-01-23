@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     DashboardAdmin as AdmDash,
     KategoriController as AdmKat,
-    PengarangController as AdmAuthor
+    PengarangController as AdmAuthor,
+    BukuController as AdmBook,
 };
 
 /*
@@ -44,8 +45,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/author', [AdmAuthor::class, 'store'])->name('adm.author.add');
         Route::patch('/admin/author', [AdmAuthor::class, 'update'])->name('adm.author.edit');
         Route::delete('/admin/author', [AdmAuthor::class, 'destroy'])->name('adm.author.delete');
-
         /** Master data buku */
+        Route::get('/admin/books', [AdmBook::class, 'index'])->name('adm.book');
+        Route::post('/admin/books', [AdmBook::class, 'store'])->name('adm.book.add');
+        Route::patch('/admin/books', [AdmBook::class, 'update'])->name('adm.book.edit');
+        Route::delete('/admin/books', [AdmBook::class, 'destroy'])->name('adm.book.delete');
+
 
     });
 });

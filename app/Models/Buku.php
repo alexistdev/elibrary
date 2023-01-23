@@ -12,4 +12,12 @@ class Buku extends Model
     protected $fillable = [
         'author_id','kategori_id','name','tahun_terbit'
     ];
+
+    public function author(){
+        return $this->belongsTo(Author::class);
+    }
+
+    public function kategori(){
+        return $this->belongsTo(Kategori::class);
+    }
 }
