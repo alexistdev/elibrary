@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/author', [AdmAuthor::class, 'store'])->name('adm.author.add');
         Route::patch('/admin/author', [AdmAuthor::class, 'update'])->name('adm.author.edit');
         Route::delete('/admin/author', [AdmAuthor::class, 'destroy'])->name('adm.author.delete');
+
+        /** Master data buku */
+
     });
 });
 
