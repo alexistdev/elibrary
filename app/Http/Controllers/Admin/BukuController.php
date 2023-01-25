@@ -21,8 +21,9 @@ class BukuController extends Controller
     /** route:  admin.buku */
     public function index(Request $request)
     {
+//        return  $buku = Buku::withCount('stok')->with('author', 'kategori')->orderBy('id', 'desc')->get();
         if ($request->ajax()) {
-            $buku = Buku::with('author', 'kategori')->orderBy('id', 'desc')->get();
+            $buku = Buku::withCount('stok')->with('author', 'kategori')->orderBy('id', 'desc')->get();
             return DataTables::of($buku)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($request) {
@@ -31,7 +32,7 @@ class BukuController extends Controller
                 ->addColumn('action', function ($row) {
                     $id = base64_encode($row->id);
                     $btn = " <a href=\"#\" class=\"btn btn-outline-primary px-5 open-edit\" data-bs-toggle=\"modal\" data-id=\"$id\" data-nama=\"$row->name\"  data-tahun=\"$row->tahun_terbit\" data-kategori=\"$row->kategori_id\" data-author=\"$row->author_id\" data-bs-target=\"#modalEdit\"> Edit</a>";
-                    $btn = $btn . " <a href=\"#\" class=\"btn btn-outline-danger px-5 open-hapus\" data-id=\"$id\" data-bs-toggle=\"modal\" data-bs-target=\"#modalHapus\"> Delete</i></a>";
+                    $btn = $btn . " <a href=\"#\" class=\"btn btn-outline-danger px-5 open-hapus\" data-id=\"$row->id\" data-bs-toggle=\"modal\" data-bs-target=\"#modalHapus\"> Delete</i></a>";
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -92,7 +93,8 @@ class BukuController extends Controller
 
 
     /** route: adm.book.edit */
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         if ($request->routeIs('adm.*')) {
             $rules = [
                 'idBuku' => 'required|max:255',
@@ -123,7 +125,7 @@ class BukuController extends Controller
             DB::beginTransaction();
             try {
                 Buku::findOrFail(base64_decode($request->idBuku));
-                Buku::where('id',base64_decode($request->idBuku))->update([
+                Buku::where('id', base64_decode($request->idBuku))->update([
                     'kategori_id' => $request->kategori_id,
                     'author_id' => $request->author_id,
                     'tahun_terbit' => $request->tahun,
@@ -135,6 +137,19 @@ class BukuController extends Controller
                 DB::rollback();
                 return redirect(route('adm.book'))->withErrors(['error' => "Ada error di system silahkan kontak administrator"]);
             }
+        } else {
+            return abort("404", "NOT FOUND");
+        }
+    }
+
+    /** route: adm.book.delete */
+
+    public function destroy(Request $request)
+    {
+        if ($request->routeIs('adm.*')) {
+            $buku = Buku::findOrFail($request->id);
+            $buku->delete();
+            return redirect(route('adm.book'))->with(['warning' => "Data berhasil dihapus!"]);
         } else {
             return abort("404", "NOT FOUND");
         }

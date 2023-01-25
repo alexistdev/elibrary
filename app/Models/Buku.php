@@ -20,4 +20,8 @@ class Buku extends Model
     public function kategori(){
         return $this->belongsTo(Kategori::class);
     }
+
+    public function stok(){
+        return $this->hasMany(Stokbuku::class);
+    }
 }

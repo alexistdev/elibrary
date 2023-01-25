@@ -30,7 +30,8 @@
                 </li>
                 <li> <a href="{{route('adm.author')}}"><i class="bx bx-right-arrow-alt"></i>Pengarang</a>
                 </li>
-                <li> <a href="{{route('adm.book')}}"><i class="bx bx-right-arrow-alt"></i>Buku</a>
+                <li> <a href="{{route('adm.book')}}"><i class="bx bx-right-arrow-alt"></i>Buku</a></li>
+                <li> <a href="{{route('adm.stock')}}"><i class="bx bx-right-arrow-alt"></i>Input Stok</a>
                 </li>
             </ul>
         </li>

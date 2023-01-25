@@ -41,6 +41,7 @@
                                     <th class="text-center">Kategori</th>
                                     <th class="text-center">Pengarang</th>
                                     <th class="text-center">Tahun Terbit</th>
+                                    <th class="text-center">Stock</th>
                                     <th class="text-center">Dibuat</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -303,17 +304,17 @@
                     <h5 class="modal-title" id="modal-standard-title">Hapus Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> <!-- // END .modal-header -->
-                <form action="{{route('adm.kategori.delete')}}" method="post">
+                <form  action="{{route('adm.book.delete')}}" method="post">
                     @csrf
                     @method('delete')
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <input type="text" name="idKategori" class="form-control" id="idHapusKategori"/>
-                                @if($errors->hapus->has('idKategori'))
+                                <input type="hidden" name="id" class="form-control" id="idhapusbuku"/>
+                                @if($errors->hapus->has('id'))
                                     <div class="row">
                                         <div
-                                            class="text-danger errorMessage">{{$errors->hapus->first('idKategori')}}</div>
+                                            class="text-danger errorMessage">{{$errors->hapus->first('id')}}</div>
                                     </div>
                                 @endif
                             </div>
@@ -383,7 +384,10 @@
             /** Saat tombol modal hapus di click */
             $(document).on("click", ".open-hapus", function () {
                 let fid = $(this).data('id');
-                $('#idHapusKategori').val(fid);
+                {{--let urlBase = '{{route('adm.book.delete',":id")}}';--}}
+                {{--let urlAction = urlBase.replace('%3Aid', fid);--}}
+                $('#idhapusbuku').val(fid);
+                // $('#formHapus').attr('action', urlAction);
             });
 
             $(document).ready(function () {
@@ -441,7 +445,9 @@
                         {data: 'kategori.name', class: 'text-left'},
                         {data: 'author.name', class: 'text-left'},
                         {data: 'tahun_terbit', class: 'text-left'},
+                        {data: 'stok_count', class: 'text-center'},
                         {data: 'created_at', class: 'text-center'},
+
                         {data: 'action', class: 'text-center', width: '15%', orderable: false},
                     ],
                     "bDestroy": true

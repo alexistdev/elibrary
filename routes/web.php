@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\{
     KategoriController as AdmKat,
     PengarangController as AdmAuthor,
     BukuController as AdmBook,
+    StockController as AdmStock,
 };
 
 /*
@@ -50,7 +51,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/books', [AdmBook::class, 'store'])->name('adm.book.add');
         Route::patch('/admin/books', [AdmBook::class, 'update'])->name('adm.book.edit');
         Route::delete('/admin/books', [AdmBook::class, 'destroy'])->name('adm.book.delete');
+        /** Master data Stock */
+        Route::get('/admin/stock', [AdmStock::class, 'index'])->name('adm.stock');
 
+        /** Ajax */
+        Route::get('/admin/ajax/get_buku_bykategori', [AdmStock::class, 'ajax_getBuku_byKategori'])->name('admin.ajax.get-buku-bykategori');
 
     });
 });
